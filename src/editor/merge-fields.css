@@ -1,0 +1,42 @@
+:root {
+  --merge-field-color: #099bd1;
+}
+
+.merge-field {
+  border-radius: 3px;
+  outline: 1px dashed var(--merge-field-color);
+  padding: 0px 0px 1px 0px;
+}
+.merge-field:hover {
+  outline: 2px solid rgb(231, 181, 17);
+  box-shadow: 0 0 0 4px rgba(231, 181, 17, 0.2);
+}
+.merge-field .brackets {
+  color: var(--merge-field-color);
+}
+
+/* estilos del popup */
+.merge-field-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Para pantallas pequeñas (celular) */
+@media (max-width: 600px) {
+  .merge-field-list {
+    max-height: none; /* Quita el límite de altura */
+  }
+}
+.merge-field-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.merge-field-option:hover {
+  background: rgba(252, 1, 1, 0.5);
+  color: #fff;
+}
+.merge-field-option:focus {
+  background: rgba(252, 1, 1, 0.5);
+  color: #fff;
+}

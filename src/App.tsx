@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import {
+  renderMergeFields,
+  extractPlaceholders,
+} from "./editor/merge-fields-plugin";
+
+import {
+  Header,
+  DatabaseSimulator,
+  VisualEditor,
+  PayloadComparison,
+  Instructions,
+} from "./components";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Simula el contenido guardado en base de datos (texto plano con placeholders)
+  const [dbContent, setDbContent] = useState<string>(
+    "Hola <strong>{{name}}</strong>, bienvenido a <strong>{{company}}</strong>. Este es un ejemplo de contenido con variables.",
+  );
+
+  // Estado del contenido visual en el editor
+  const [editorContent, setEditorContent] = useState<string>("");
+
+  // Estado para mostrar lo último enviado a la API
+  const [lastSent, setLastSent] = useState<string | null>(null);
+  const [rawSent, setRawSent] = useState<string | null>(null);
+
+  /**
+   * Simula recibir datos de una API.
+   * Transforma el texto plano (guardado en DB) a HTML visual para el editor.
+   */
+  const handleLoadFromAPI = () => {
+    const visualContent = renderMergeFields(dbContent);
+    setEditorContent(visualContent);
+  };
+
+  /**
+   * Simula enviar datos a una API.
+   * Transforma el HTML visual del editor a texto plano para guardar en DB.
+   */
+  const handleSaveToAPI = () => {
+    // 1. Sin Middleware (Lo que tiene el editor internamente)
+    setRawSent(editorContent);
+
+    // 2. Con Middleware (Lo que queremos enviar)
+    const plainText = extractPlaceholders(editorContent);
+    setDbContent(plainText);
+    setLastSent(plainText);
+
+    console.log("Guardando en API:", plainText);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+
+      <DatabaseSimulator
+        content={dbContent}
+        setContent={setDbContent}
+        onLoad={handleLoadFromAPI}
+      />
+
+      <VisualEditor
+        content={editorContent}
+        setContent={setEditorContent}
+        onSave={handleSaveToAPI}
+      />
+
+      <PayloadComparison lastSent={lastSent} rawSent={rawSent} />
+
+      <Instructions />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

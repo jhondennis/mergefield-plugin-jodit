@@ -1,50 +1,48 @@
-# React + TypeScript + Vite
+# Jodit Merge Fields Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![GitHub](https://img.shields.io/badge/GitHub-Repo-blue?logo=github)](https://github.com/jhondennis/mergefield-plugin-jodit)
+[![Demo](https://img.shields.io/badge/Demo-Live-green?logo=vercel)](https://mergefield-plugin-jodit.pages.dev)
 
-Currently, two official plugins are available:
+Este proyecto implementa un editor de texto enriquecido (Jodit) con soporte para "Merge Fields" (campos de combinación) interactivos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Funcionalidades Principales
 
-## Expanding the ESLint configuration
+1. **Inserción de Campos**: Permite insertar variables como `{{nombre_cliente}}` mediante un menú o autocompletado `{`.
+2. **Visualización Interactiva**: Los campos se renderizan como "chips" visuales dentro del editor, mejorando la experiencia de usuario.
+3. **Gestión de Datos**:
+   - **Carga desde API (Simulada)**: Transforma texto plano guardado en base de datos (ej: `Hola {{nombre}}`) a contenido visual HTML.
+   - **Guardado a API (Simulada)**: Limpia el HTML visual y guarda solo los placeholders textuales en la base de datos.
+4. **Validación de Integridad**: Evita que los usuarios rompan la estructura de las variables al editarlas.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Uso del Plugin
 
-- Configure the top-level `parserOptions` property like this:
+### Componentes Clave
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **`EditorPlugin`**: Componente wrapper del editor Jodit.
+- **`renderMergeFields(text)`**: Función que convierte texto plano con variables `{{...}}` a HTML con chips visuales.
+- **`extractPlaceholders(html)`**: Función que limpia el HTML del editor para devolver texto plano con variables `{{...}}`.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Flujo de Datos
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+El flujo recomendado (implementado en `App.tsx`) es:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. **Recibir datos (Backend -> Frontend)**:
+
+   ```typescript
+   // El backend envía: "Hola {{nombre}}"
+   const visualContent = renderMergeFields(backendData);
+   // El editor muestra: "Hola [nombre]" (chip visual)
+   ```
+
+2. **Editar**: El usuario interactúa con los chips.
+
+3. **Enviar datos (Frontend -> Backend)**:
+   ```typescript
+   // El editor tiene HTML complejo
+   const plainData = extractPlaceholders(editorContent);
+   // Se envía al backend: "Hola {{nombre}}"
+   ```
+
+## Estilos
+
+Los estilos de los chips se pueden personalizar en `src/editor/merge-fields.css`. Actualmente usan un diseño minimalista con variables CSS.

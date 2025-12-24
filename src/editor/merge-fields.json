@@ -1,0 +1,26 @@
+[
+  {
+    "id": "name",
+    "label": "Nombre"
+  },
+  {
+    "id": "company",
+    "label": "Empresa"
+  },
+  {
+    "id": "age",
+    "label": "Edad"
+  },
+  {
+    "id": "address",
+    "label": "Dirección"
+  },
+  {
+    "id": "phone",
+    "label": "Teléfono"
+  },
+  {
+    "id": "email",
+    "label": "Correo Electrónico"
+  }
+]
