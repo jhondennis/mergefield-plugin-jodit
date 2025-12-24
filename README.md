@@ -5,6 +5,29 @@
 
 Este proyecto implementa un editor de texto enriquecido (Jodit) con soporte para "Merge Fields" (campos de combinación) interactivos.
 
+## Instalación
+
+1. Clona el repositorio:
+
+   ```bash
+   git clone https://github.com/jhondennis/mergefield-plugin-jodit.git
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   bun install
+   ```
+
+## Ejecutar Demo
+
+Para iniciar el servidor de desarrollo local:
+
+```bash
+bun run dev
+```
+
+El servidor iniciará en `http://localhost:5173`.
+
 ## Funcionalidades Principales
 
 1. **Inserción de Campos**: Permite insertar variables como `{{nombre_cliente}}` mediante un menú o autocompletado `{`.
@@ -46,3 +69,7 @@ El flujo recomendado (implementado en `App.tsx`) es:
 ## Estilos
 
 Los estilos de los chips se pueden personalizar en `src/editor/merge-fields.css`. Actualmente usan un diseño minimalista con variables CSS.
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
